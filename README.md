@@ -76,7 +76,7 @@ Or double-click `start-game.bat`. The local server binds only to `127.0.0.1:8765
 
 ## Project status
 
-VOIDFALL is a single-player browser game, version 1.0.2. It has not been tuned against a broad player cohort. Enemies and upgrades are designed for readable arcade runs, but balance will change as play feedback comes in. The initial UI language is Russian.
+VOIDFALL is a single-player browser game, version 1.0.3. It has not been tuned against a broad player cohort. Enemies and upgrades are designed for readable arcade runs, but balance will change as play feedback comes in. The initial UI language is Russian.
 
 ## ☕ Support
 

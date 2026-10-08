@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 — 2026-10-09
+
+- Completed the MIT license text with the standard limitation-of-liability clause.
+
 ## 1.0.2 — 2026-10-08
 
 - Added a runnable Node.js regression suite for run contracts.
