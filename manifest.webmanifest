@@ -1,0 +1,15 @@
+{
+  "name": "VOIDFALL — Last Signal",
+  "short_name": "VOIDFALL",
+  "description": "Sci-fi arena roguelite with endless waves, bosses, relic builds, and run contracts.",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#080c15",
+  "theme_color": "#080c15",
+  "icons": [
+    { "src": "./assets/voidfall-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

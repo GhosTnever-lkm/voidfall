@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080c15" />
+    <meta name="description" content="VOIDFALL — sci-fi arena roguelite: endless waves, elite enemies, bosses, relic builds, and run contracts." />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="./assets/voidfall-mark.svg" />
+    <title>VOIDFALL — Последний сигнал</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Voidfall — главная">
+          <span class="brand-mark">V</span>
+          <span>VOID<span class="brand-light">FALL</span></span>
+        </a>
+        <div class="topbar-status"><span class="status-dot"></span> СИГНАЛ СТАБИЛЕН</div>
+        <button class="icon-button" id="sound-toggle" type="button" aria-label="Звук выключен" title="Звук">♫</button>
+      </header>
+
+      <section class="game-layout" aria-label="Игровая арена">
+        <div class="arena-column">
+          <div class="arena-frame">
+            <div class="arena-topline">
+              <span class="eyebrow">СЕКТОР 07 <span class="separator">/</span> ПОСЛЕДНИЙ СИГНАЛ</span>
+              <span class="run-state" id="run-state"><i></i> ОЖИДАНИЕ</span>
+            </div>
+            <div class="canvas-wrap">
+              <canvas id="game" aria-label="Игровая арена Voidfall"></canvas>
+              <div class="ability-bar" id="ability-bar" aria-label="Тактические способности">
+                <button class="ability-slot" type="button" data-ability="phaseShift" aria-label="Q — Фазовый сдвиг">
+                  <kbd>Q</kbd><span class="ability-copy"><strong>ФАЗОВЫЙ СДВИГ</strong><small>Рывок и уклонение</small></span><span class="ability-cooldown" id="cooldown-phaseShift">ГОТОВ</span>
+                </button>
+                <button class="ability-slot" type="button" data-ability="voidNova" aria-label="E — Всплеск Бездны">
+                  <kbd>E</kbd><span class="ability-copy"><strong>ВСПЛЕСК БЕЗДНЫ</strong><small>Взрыв вокруг пилота</small></span><span class="ability-cooldown" id="cooldown-voidNova">ГОТОВ</span>
+                </button>
+                <button class="ability-slot" type="button" data-ability="timeFold" aria-label="R — Складка времени">
+                  <kbd>R</kbd><span class="ability-copy"><strong>СКЛАДКА ВРЕМЕНИ</strong><small>Замедление угроз</small></span><span class="ability-cooldown" id="cooldown-timeFold">ГОТОВ</span>
+                </button>
+              </div>
+              <div class="screen-overlay" id="start-screen">
+                <div class="overlay-content">
+                  <div class="orbit-icon"><span></span><b></b><i></i></div>
+                  <p class="eyebrow">СИГНАЛ ПОТЕРЯН. МИССИЯ ПРОДОЛЖАЕТСЯ.</p>
+                  <h1>Последний<br /><em>сигнал</em></h1>
+                  <p class="intro-copy">Ты один среди обломков. Держись, собирай энергию и не дай тьме поглотить сектор.</p>
+                  <div class="career-strip"><span><b id="career-essence">0</b> ЭССЕНЦИИ</span><span>РЕКОРД <b id="career-best">ВОЛНА 0</b></span><button class="secondary-button" id="shop-open-button" type="button">АРСЕНАЛ <span>↗</span></button></div>
+                  <button class="primary-button" id="start-button" type="button"><span>Начать миссию</span><b>→</b></button>
+                  <div class="controls-hint"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> движение</span><span><b class="mouse-icon">⊙</b> наведи и стреляй</span><span><kbd>Q</kbd><kbd>E</kbd><kbd>R</kbd> способности</span><span><kbd>SHIFT</kbd> рывок</span><span><kbd>ESC</kbd> пауза</span></div>
+                </div>
+              </div>
+              <div class="screen-overlay hidden" id="pause-screen" aria-live="polite">
+                <div class="overlay-content compact-overlay">
+                  <p class="eyebrow">СИСТЕМА НА ПАУЗЕ</p>
+                  <h2>Передышка</h2>
+                  <p class="intro-copy">Сектор подождёт. Нажми ESC, когда будешь готов.</p>
+                </div>
+              </div>
+              <div class="screen-overlay hidden" id="upgrade-screen" aria-live="polite">
+                <div class="overlay-content upgrade-content">
+                  <p class="eyebrow">НОВЫЙ УРОВЕНЬ ДОСТИГНУТ</p>
+                  <h2>Выбери <em>улучшение</em></h2>
+                  <p class="intro-copy">Система адаптируется к твоему стилю.</p>
+                  <div class="upgrade-options" id="upgrade-options"></div>
+                </div>
+              </div>
+              <div class="screen-overlay hidden" id="gameover-screen" aria-live="polite">
+                <div class="overlay-content compact-overlay">
+                  <p class="eyebrow">СВЯЗЬ ПРЕРВАНА</p>
+                  <h2>Сигнал <em>потерян</em></h2>
+                  <p class="intro-copy" id="final-stats">Ты продержался 0:00</p>
+                  <button class="primary-button" id="restart-button" type="button"><span>Попробовать снова</span><b>↻</b></button>
+                  <button class="secondary-button hangar-button" id="hangar-button" type="button">ВЕРНУТЬСЯ В АНГАР <span>←</span></button>
+                </div>
+              </div>
+              <div class="screen-overlay hidden" id="shop-screen" aria-live="polite">
+                <div class="overlay-content shop-content">
+                  <p class="eyebrow">ПОСТОЯННАЯ МОДИФИКАЦИЯ КОРАБЛЯ</p>
+                  <h2>Арсенал <em>реликвий</em></h2>
+                  <p class="intro-copy">Эссенция сохраняется между миссиями. Бонусы действуют с начала следующего забега.</p>
+                  <div class="shop-balance"><span>ДОСТУПНО</span><strong id="shop-essence">0</strong><span>ЭССЕНЦИИ</span></div>
+                  <div class="relic-options" id="relic-options"></div>
+                  <button class="secondary-button" id="shop-close-button" type="button">НАЗАД К МИССИИ <span>←</span></button>
+                </div>
+              </div>
+              <div class="toast hidden" id="toast" role="status"></div>
+            </div>
+            <div class="arena-footline">
+              <span><b class="legend-dot player-dot"></b> ПИЛОТ</span>
+              <span><b class="legend-dot enemy-dot"></b> УГРОЗА</span>
+              <span><b class="legend-dot xp-dot"></b> ЭНЕРГИЯ</span>
+              <span class="coordinates" id="coordinates">X 000 <span>/</span> Y 000</span>
+            </div>
+          </div>
+          <div class="bottom-note"><span class="note-icon">✦</span><span>Каждая волна сильнее предыдущей. Найди ритм — и сектор станет твоим.</span><span class="note-accent">УДАЧИ, ПИЛОТ</span></div>
+        </div>
+
+        <aside class="hud-column" aria-label="Показатели миссии">
+          <section class="hud-card pilot-card">
+            <div class="card-heading"><span class="eyebrow">ПИЛОТ</span><span class="pilot-badge">№ 07</span></div>
+            <div class="pilot-profile"><div class="avatar"><span>✦</span><i></i></div><div><strong>Странник</strong><small>Последний выживший</small></div></div>
+            <div class="health-label"><span>ЦЕЛОСТНОСТЬ</span><b id="health-value">100 <small>/ 100</small></b></div>
+            <div class="bar health-bar"><i id="health-fill"></i></div>
+            <div class="xp-label"><span>ОПЫТ</span><b id="level-value">УР. 1</b></div>
+            <div class="bar xp-bar"><i id="xp-fill"></i></div>
+          </section>
+
+          <section class="hud-card stats-card">
+            <div class="card-heading"><span class="eyebrow">ХОД МИССИИ</span><span class="live-tag"><i></i> LIVE</span></div>
+            <div class="stat-grid">
+              <div class="stat-cell"><span>ВОЛНА</span><strong id="wave-value">01</strong><small id="wave-caption">ПОДГОТОВКА</small></div>
+              <div class="stat-cell"><span>ВРЕМЯ</span><strong id="time-value">00:00</strong><small>В СЕКТОРЕ</small></div>
+              <div class="stat-cell"><span>УГРОЗЫ</span><strong id="enemy-value">00</strong><small>НА АРЕНЕ</small></div>
+              <div class="stat-cell"><span>УСТРАНЕНО</span><strong id="kill-value">00</strong><small>ЦЕЛЕЙ</small></div>
+            </div>
+          </section>
+
+          <section class="hud-card weapon-card">
+            <div class="card-heading"><span class="eyebrow">СНАРЯЖЕНИЕ</span><span class="weapon-level" id="weapon-level">MK-I</span></div>
+            <div class="weapon-display"><div class="weapon-icon">╱<i></i>╲</div><div><strong>Искровой импульс</strong><small>АВТОНАВЕДЕНИЕ · <span id="fire-rate">1.0</span>/СЕК</small></div></div>
+            <div class="weapon-footer"><span>УРОН <b id="damage-value">18</b></span><span>СКОРОСТЬ <b id="speed-value">100%</b></span></div>
+          </section>
+
+          <section class="hud-card contract-card" aria-label="Контракты миссии">
+            <div class="card-heading"><span class="eyebrow">КОНТРАКТЫ СЕКТОРА</span><span class="objective-icon">⌖</span></div>
+            <div class="contract-list" id="contract-list"><p class="contract-empty">Контракты появятся в начале миссии.</p></div>
+          </section>
+
+          <div class="hud-footer"><span>VOIDFALL <b>1.0.0</b></span><button class="pause-button" id="pause-button" type="button"><kbd>ESC</kbd> ПАУЗА</button></div>
+        </aside>
+      </section>
+
+      <footer class="footer"><span>© 2026 VOIDFALL PROJECT</span><span>ОДИНОКАЯ МИССИЯ <i>·</i> БЕСКОНЕЧНЫЙ СЕКТОР</span><span class="footer-signal">◉ 90.7 MHZ</span></footer>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
