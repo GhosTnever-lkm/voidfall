@@ -1,9 +1,10 @@
 {
   "name": "voidfall-last-signal",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node serve.cjs"
+    "start": "node serve.cjs",
+    "test": "node --test"
   }
 }

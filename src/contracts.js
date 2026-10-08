@@ -5,7 +5,7 @@ const CONTRACT_TYPES = ['enemy_killed', 'crystal_collected', 'survive'];
 const TYPE_META = {
   enemy_killed:      { unit: 'врагов', titlePrefix: 'Истребитель' },
   crystal_collected: { unit: 'сфер',   titlePrefix: 'Собиратель'   },
-  survive:           { unit: 'секунд', titlePrefix: 'Выживший'    },
+  survive:           { unit: 'с', titlePrefix: 'Выжить' },
 };
 
 const REWARD_BASE = { enemy_killed: 30, crystal_collected: 25, survive: 40 };

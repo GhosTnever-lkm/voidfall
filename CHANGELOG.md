@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2 — 2026-10-08
+
+- Added a runnable Node.js regression suite for run contracts.
+- Added `npm test` and documented how to run the suite.
+- Shortened the survival contract label to natural Russian UI wording.
+
 ## 1.0.1 — 2026-10-08
 
 - Removed temporary development artifacts from the public repository.

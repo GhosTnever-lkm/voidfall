@@ -46,6 +46,14 @@ The three tactical abilities also have clickable HUD buttons. Sound starts muted
 - **Offline-ready app shell:** install the page from a supported browser and launch it like an app. Audio is synthesized locally; no media download is needed.
 - **Responsive controls and HUD:** the desktop layout keeps the arena and mission data visible; a compact layout adapts to smaller screens.
 
+## Tests
+
+Run the contract regression suite with Node.js 18 or newer:
+
+```powershell
+npm test
+```
+
 ## Run from source
 
 Requirements: Node.js 18 or newer. No package install is required.
@@ -68,7 +76,7 @@ Or double-click `start-game.bat`. The local server binds only to `127.0.0.1:8765
 
 ## Project status
 
-VOIDFALL is a single-player browser game, version 1.0.1. It has not been tuned against a broad player cohort. Enemies and upgrades are designed for readable arcade runs, but balance will change as play feedback comes in. The initial UI language is Russian.
+VOIDFALL is a single-player browser game, version 1.0.2. It has not been tuned against a broad player cohort. Enemies and upgrades are designed for readable arcade runs, but balance will change as play feedback comes in. The initial UI language is Russian.
 
 ## ☕ Support
 
