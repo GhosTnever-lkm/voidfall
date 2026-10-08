@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1 — 2026-10-08
+
+- Removed temporary development artifacts from the public repository.
+- Kept the game code and release content unchanged.
+
 ## 1.0.0 — 2026-10-08
 
 - First public release of VOIDFALL: Last Signal.
