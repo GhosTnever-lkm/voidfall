@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4 — 2026-10-11
+
+- Add a CI workflow that runs the contract test suite (8 tests) on every push and pull request; previously the tests existed but were not run in CI.
+
 ## 1.0.3 — 2026-10-09
 
 - Completed the MIT license text with the standard limitation-of-liability clause.
