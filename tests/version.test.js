@@ -23,5 +23,7 @@ test('package, README, changelog, and HUD use the shared app version', () => {
 });
 
 test('offline precache contains the HUD version module', () => {
-  assert.match(read('sw.js'), /"\.\/src\/version\.js"/);
+  const serviceWorker = read('sw.js');
+  assert.match(serviceWorker, /"\.\/src\/version\.js"/);
+  assert.match(serviceWorker, new RegExp(`const CACHE = "voidfall-shell-v${APP_VERSION.replaceAll('.', '\\.')}";`));
 });

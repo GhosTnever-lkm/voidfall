@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.7 — 2026-10-13
+
+- Version the offline shell cache with each app release so returning players do not keep running stale cached game files.
+- Add a regression check tying the service-worker cache version to the package and HUD version.
+
 ## 1.0.6 — 2026-10-13
 
 - Count only fully cleared waves toward career records and essence rewards; show the reached wave separately after a run ends.

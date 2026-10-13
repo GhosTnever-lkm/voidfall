@@ -1,4 +1,4 @@
-const CACHE = "voidfall-shell-v2";
+const CACHE = "voidfall-shell-v1.0.7";
 const CORE = [
   "./",
   "./index.html",
