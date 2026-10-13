@@ -1,6 +1,6 @@
 import { Game } from "./game.js";
 import { BASE_STATS } from "./content.js";
-import { applyRelics, buyRelic, calcRunReward, canBuyRelic, loadProfile, recordRun, RELICS, saveProfile } from "./progression.js";
+import { applyRelics, buyRelic, calcRunReward, canBuyRelic, canSaveProfile, loadProfile, recordRun, RELICS, saveProfile } from "./progression.js";
 import { AudioManager } from "./audio.js";
 import { APP_VERSION } from "./version.js";
 
@@ -16,6 +16,7 @@ const upgradeOptions = $("#upgrade-options");
 const relicOptions = $("#relic-options");
 const runState = $("#run-state");
 const toast = $("#toast");
+const saveStatus = $("#save-status");
 const contractList = $("#contract-list");
 
 const formatTime = (seconds = 0) => {
@@ -28,7 +29,14 @@ let upgrading = false;
 let pausedByPlayer = false;
 let toastTimer = 0;
 let profile = loadProfile();
+saveStatus.hidden = canSaveProfile();
 const audio = new AudioManager({ enabled: false });
+
+function persistProfile() {
+  const saved = saveProfile(profile);
+  saveStatus.hidden = saved;
+  return saved;
+}
 
 const unlockAudio = () => {
   audio.unlock();
@@ -71,11 +79,11 @@ function renderShop() {
       const next = buyRelic(profile, relic.id);
       if (next.essence === profile.essence && next.ownedRelics.length === profile.ownedRelics.length) return;
       profile = next;
-      saveProfile(profile);
+      const saved = persistProfile();
       renderProfile();
       renderShop();
       audio.play("ui");
-      showToast(`${relic.name} приобретена`);
+      showToast(saved ? `${relic.name} приобретена` : `${relic.name} выбрана, но не сохранена`);
     });
     relicOptions.append(card);
   }
@@ -191,9 +199,10 @@ function createGame() {
       setVisible(upgradeScreen, false);
       const reward = calcRunReward(stats);
       profile = recordRun(profile, stats);
-      saveProfile(profile);
+      const saved = persistProfile();
       renderProfile();
       $("#final-stats").textContent = `Ты продержался ${formatTime(stats.time)} · достигнута волна ${stats.wave}, завершено ${stats.completedWaves} · устранено ${stats.kills} · +${reward} эссенции`;
+      if (!saved) showToast("Не удалось сохранить прогресс: он может пропасть после перезагрузки");
       setVisible(gameOverScreen, true);
     },
   });
