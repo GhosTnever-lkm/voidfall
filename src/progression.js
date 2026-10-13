@@ -209,11 +209,11 @@ function readBosses(result) {
 /** Сколько эссенции принесёт забег. Чистая функция. */
 export function calcRunReward(result) {
   const r = result && typeof result === 'object' ? result : {};
-  const wave = toInt(r.wave, 0, 0, 1_000_000);
+  const completedWaves = toInt(r.completedWaves ?? r.wave, 0, 0, 1_000_000);
   const kills = toInt(r.kills, 0, 0, 1_000_000);
   const bosses = readBosses(r);
 
-  const total = wave * RUN_REWARD.perWave + kills * RUN_REWARD.perKill + bosses * RUN_REWARD.perBoss;
+  const total = completedWaves * RUN_REWARD.perWave + kills * RUN_REWARD.perKill + bosses * RUN_REWARD.perBoss;
   return toInt(total, 0, 0, MAX_INT);
 }
 
@@ -227,16 +227,16 @@ export function recordRun(profile, result) {
   const current = sanitizeProfile(profile);
   const r = result && typeof result === 'object' ? result : {};
 
-  const wave = toInt(r.wave, 0, 0, 1_000_000);
+  const completedWaves = toInt(r.completedWaves ?? r.wave, 0, 0, 1_000_000);
   const score = toInt(r.score, 0, 0, MAX_BIG);
   const kills = toInt(r.kills, 0, 0, 1_000_000);
   const bosses = readBosses(r);
-  const reward = calcRunReward({ wave, kills, bosses });
+  const reward = calcRunReward({ completedWaves, kills, bosses });
 
   return {
     version: PROFILE_VERSION,
     essence: toInt(current.essence + reward, 0, 0, MAX_INT),
-    bestWave: Math.max(current.bestWave, wave),
+    bestWave: Math.max(current.bestWave, completedWaves),
     bestScore: Math.max(current.bestScore, score),
     totalRuns: toInt(current.totalRuns + 1, 0, 0, MAX_INT),
     totalKills: toInt(current.totalKills + kills, 0, 0, MAX_INT),

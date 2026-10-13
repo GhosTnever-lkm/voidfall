@@ -50,6 +50,7 @@ export class Game {
     this.stars = [];
 
     this.wave = 0;
+    this.completedWaves = 0;
     this.pendingSpawns = 0;
     this.spawnTimer = 0;
     this.waveDelay = 0;
@@ -191,6 +192,7 @@ export class Game {
     this.particles.length = 0;
 
     this.wave = 0;
+    this.completedWaves = 0;
     this.pendingSpawns = 0;
     this.spawnTimer = 0;
     this.waveDelay = 1.0;
@@ -648,6 +650,7 @@ export class Game {
         this.pendingSpawns = this.spawnQueue.length;
       }
     } else if (this.enemies.length === 0 && !this.boss) {
+      if (this.wave > 0) this.completedWaves = this.wave;
       this.waveDelay -= dt;
       if (this.waveDelay <= 0) this._startWave();
     }
@@ -931,6 +934,7 @@ export class Game {
     this.callbacks.onGameOver({
       score: Math.round(this.score),
       wave: this.wave,
+      completedWaves: this.completedWaves,
       level: this.player.level,
       kills: this.kills,
       bosses: this.bossKills,
@@ -949,6 +953,7 @@ export class Game {
       xp: Math.round(p.xp),
       xpToNext: Math.round(p.xpToNext),
       wave: this.wave,
+      completedWaves: this.completedWaves,
       score: Math.round(this.score),
       time: this.elapsed,
       kills: this.kills,
@@ -967,7 +972,7 @@ export class Game {
 
   getState() {
     const p = this.player;
-    return p ? { hp:p.hp, maxHp:p.maxHp, level:p.level, xp:p.xp, xpToNext:p.xpToNext, wave:this.wave, score:this.score, time:this.elapsed, kills:this.kills, bosses:this.bossKills, paused:this.paused, gameOver:this.gameOver, enemies:this.enemies.length, damage:p.damage, fireRate:1/p.fireDelay, speedMultiplier:p.speed/this.baseStats.moveSpeed, abilities:this.abilityState.cooldowns, timeFold:this.abilityState.timeFold, contracts:this.contractState.contracts } : {};
+    return p ? { hp:p.hp, maxHp:p.maxHp, level:p.level, xp:p.xp, xpToNext:p.xpToNext, wave:this.wave, completedWaves:this.completedWaves, score:this.score, time:this.elapsed, kills:this.kills, bosses:this.bossKills, paused:this.paused, gameOver:this.gameOver, enemies:this.enemies.length, damage:p.damage, fireRate:1/p.fireDelay, speedMultiplier:p.speed/this.baseStats.moveSpeed, abilities:this.abilityState.cooldowns, timeFold:this.abilityState.timeFold, contracts:this.contractState.contracts } : {};
   }
 
   _syncPlayerStats() {
