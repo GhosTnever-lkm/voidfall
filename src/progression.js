@@ -163,6 +163,11 @@ function getStorage() {
   }
 }
 
+/** Проверяет доступность браузерного хранилища, не меняя профиль игрока. */
+export function canSaveProfile() {
+  return getStorage() !== null;
+}
+
 /** Загрузка профиля. Никогда не бросает. */
 export function loadProfile() {
   const storage = getStorage();

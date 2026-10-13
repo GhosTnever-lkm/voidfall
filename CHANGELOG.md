@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.8 — 2026-10-13
+
+- Show a persistent warning when browser storage cannot save the career profile.
+- Clarify relic purchase and run results when progress exists only for the current session.
+- Check storage failures without rewriting the player's profile at startup.
+
 ## 1.0.7 — 2026-10-13
 
 - Version the offline shell cache with each app release so returning players do not keep running stale cached game files.
