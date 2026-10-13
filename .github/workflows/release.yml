@@ -1,4 +1,4 @@
-name: Package VOIDFALL release
+name: Release VOIDFALL
 
 on:
   push:
@@ -8,20 +8,25 @@ permissions:
   contents: write
 
 jobs:
-  package:
+  release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build portable game archive
-        shell: bash
-        run: |
-          version="${GITHUB_REF_NAME#v}"
-          mkdir -p "dist/VOIDFALL-v${version}"
-          cp -r index.html style.css src assets manifest.webmanifest sw.js start-game.bat serve.cjs package.json README.md CHANGELOG.md LICENSE .github "dist/VOIDFALL-v${version}/"
-          cd dist
-          zip -qr "VOIDFALL-v${version}.zip" "VOIDFALL-v${version}"
-          sha256sum "VOIDFALL-v${version}.zip" > "VOIDFALL-v${version}.sha256"
-      - uses: softprops/action-gh-release@v2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          generate_release_notes: true
-          files: dist/VOIDFALL-v*
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify version and run tests
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          test "${GITHUB_REF_NAME}" = "v${VERSION}"
+          npm test
+      - name: Package Windows-ready source bundle
+        run: |
+          git archive --format=zip --prefix="VOIDFALL-${GITHUB_REF_NAME}/" "${GITHUB_REF_NAME}" -o "VOIDFALL-${GITHUB_REF_NAME}.zip"
+          sha256sum "VOIDFALL-${GITHUB_REF_NAME}.zip" > SHA256SUMS
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "VOIDFALL $GITHUB_REF_NAME" --generate-notes "VOIDFALL-${GITHUB_REF_NAME}.zip" SHA256SUMS

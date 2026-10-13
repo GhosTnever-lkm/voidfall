@@ -1,4 +1,4 @@
-const CACHE = "voidfall-shell-v1";
+const CACHE = "voidfall-shell-v2";
 const CORE = [
   "./",
   "./index.html",
@@ -6,6 +6,7 @@ const CORE = [
   "./manifest.webmanifest",
   "./assets/voidfall-mark.svg",
   "./src/main.js",
+  "./src/version.js",
   "./src/game.js",
   "./src/content.js",
   "./src/abilities.js",

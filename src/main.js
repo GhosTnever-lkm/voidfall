@@ -2,8 +2,10 @@ import { Game } from "./game.js";
 import { BASE_STATS } from "./content.js";
 import { applyRelics, buyRelic, calcRunReward, canBuyRelic, loadProfile, recordRun, RELICS, saveProfile } from "./progression.js";
 import { AudioManager } from "./audio.js";
+import { APP_VERSION } from "./version.js";
 
 const $ = (selector) => document.querySelector(selector);
+$("#app-version").textContent = APP_VERSION;
 const canvas = $("#game");
 const startScreen = $("#start-screen");
 const pauseScreen = $("#pause-screen");

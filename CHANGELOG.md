@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5 — 2026-10-13
+
+- Derive the in-game HUD version from one module and include that module in the offline app shell, preventing the displayed version from lagging behind the release.
+- Add version consistency coverage and automatically attach a Windows-ready source ZIP with a SHA-256 manifest to tagged releases.
+
 ## 1.0.4 — 2026-10-11
 
 - Add a CI workflow that runs the contract test suite (8 tests) on every push and pull request; previously the tests existed but were not run in CI.
