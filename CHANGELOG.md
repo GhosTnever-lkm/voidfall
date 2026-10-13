@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.6 — 2026-10-13
+
+- Count only fully cleared waves toward career records and essence rewards; show the reached wave separately after a run ends.
+- Add regression coverage for cleared waves, an active wave, and the per-run reward calculation.
+
 ## 1.0.5 — 2026-10-13
 
 - Derive the in-game HUD version from one module and include that module in the offline app shell, preventing the displayed version from lagging behind the release.

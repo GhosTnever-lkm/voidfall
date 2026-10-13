@@ -193,7 +193,7 @@ function createGame() {
       profile = recordRun(profile, stats);
       saveProfile(profile);
       renderProfile();
-      $("#final-stats").textContent = `Ты продержался ${formatTime(stats.time)} · волна ${stats.wave} · устранено ${stats.kills} · +${reward} эссенции`;
+      $("#final-stats").textContent = `Ты продержался ${formatTime(stats.time)} · достигнута волна ${stats.wave}, завершено ${stats.completedWaves} · устранено ${stats.kills} · +${reward} эссенции`;
       setVisible(gameOverScreen, true);
     },
   });
