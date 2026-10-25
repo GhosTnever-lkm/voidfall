@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.9 — 2026-10-25
+
+- Limit service-worker cache cleanup and cache reads to VOIDFALL-owned storage, preserving other apps hosted on the same origin.
+- Add a regression test covering cache isolation during service-worker activation.
+
 ## 1.0.8 — 2026-10-13
 
 - Show a persistent warning when browser storage cannot save the career profile.

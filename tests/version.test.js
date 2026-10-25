@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import vm from 'node:vm';
 import { APP_VERSION } from '../src/version.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -25,5 +26,28 @@ test('package, README, changelog, and HUD use the shared app version', () => {
 test('offline precache contains the HUD version module', () => {
   const serviceWorker = read('sw.js');
   assert.match(serviceWorker, /"\.\/src\/version\.js"/);
+  assert.match(serviceWorker, /caches\.open\(CACHE\)\.then\(\(cache\) => cache\.match\(request\)\)/);
   assert.match(serviceWorker, new RegExp(`const CACHE = "voidfall-shell-v${APP_VERSION.replaceAll('.', '\\.')}";`));
+});
+
+test('service worker upgrade preserves caches owned by other apps on the same origin', async () => {
+  const handlers = new Map();
+  const deleted = [];
+  const serviceWorker = read('sw.js');
+  const self = {
+    addEventListener(type, listener) { handlers.set(type, listener); },
+    skipWaiting() {},
+    clients: { claim: () => Promise.resolve() },
+  };
+  const cacheStorage = {
+    keys: async () => ['voidfall-shell-v1.0.8', 'another-app-shell-v3'],
+    delete: async (key) => { deleted.push(key); return true; },
+  };
+  vm.runInNewContext(serviceWorker, { self, caches: cacheStorage, Promise, URL });
+  const activation = handlers.get('activate');
+  assert.equal(typeof activation, 'function');
+  let completion;
+  activation({ waitUntil(promise) { completion = promise; } });
+  await completion;
+  assert.deepEqual(deleted, ['voidfall-shell-v1.0.8']);
 });
