@@ -1,4 +1,4 @@
-const CACHE = "voidfall-shell-v1.0.8";
+const CACHE = "voidfall-shell-v1.0.9";
 const CORE = [
   "./",
   "./index.html",
@@ -22,7 +22,7 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
+    caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith("voidfall-shell-") && key !== CACHE).map((key) => caches.delete(key))))
   );
   self.clients.claim();
 });
@@ -31,7 +31,7 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET" || new URL(request.url).origin !== self.location.origin) return;
   event.respondWith(
-    caches.match(request).then((cached) => {
+    caches.open(CACHE).then((cache) => cache.match(request)).then((cached) => {
       if (cached) return cached;
       return fetch(request).then((response) => {
         if (response.ok && response.type === "basic") {
